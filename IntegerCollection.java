@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -8,9 +9,15 @@ import java.util.List;
  * avec 0 < i <= n et n = cardinalité de IntegerCollection
  * ex: {3,5,18,5,59,23}; 3 est le premier élément rentré dans IntegerCollection, 23 le plus récent
  */
-public class IntegerCollection {
+public class IntegerCollection<T> implements Iterable<T>{
 
-    private List<Integer> liste;
+    //private List<Integer> liste;
+    //private List<T> liste;
+    private List<T> liste = new ArrayList<>();
+    public void add(T val){
+        liste.add(val);
+    } 
+
 
     /**
      * @effects crée une nouvelle IntegerCollection vide
@@ -23,10 +30,10 @@ public class IntegerCollection {
      * @modifies this
      * @effects ajoute une occurence de i à this
      */
-    public void add(int i){
+    /*public void add(int i){
         liste.add(i);
     }
-
+*/
     /**
      * @modifies this
      * @effects retire une (et une seule) occurence de i à this
@@ -73,5 +80,62 @@ public class IntegerCollection {
     /**
      * TODO à enrichir
      */
+    @Override
+    public Iterator<T> iterator(){
+        return new CustomIterator<T>(liste);  
+    }
+    public class CustomIterator<E> implements Iterator<E> {
+        
+        int indexPosition = 0;
+        List<E> internalList;
+
+        public CustomIterator(List<E> internalList){
+            this.internalList = internalList;
+        }
+
+
+        @Override
+        public boolean hasNext(){
+            if(internalList.size() >= indexPosition + 1) {
+                return true;
+            }
+            return false;
+        }
+        @Override
+        public E next(){
+            E val = internalList.get(indexPosition);
+            indexPosition++;
+            return val;
+        }
+
+    }
+    //@Override
+    public Iterator<T> backIterator() {
+        return new BackCustomIterator<T>(liste);
+    }
+
+    public class BackCustomIterator<F> implements Iterator<F> {
+        
+        List<F> backInternalList;
+        public BackCustomIterator(List<F> backInternalList){
+            this.backInternalList = backInternalList;
+        }
+        int indexPosition = 0;
+        
+        //@Override
+        public boolean hasNext(){
+            if(0 <= backInternalList.size()-1- indexPosition) {
+                return true;
+            }
+            return false;
+        }
+        //@Override
+        public F next(){
+            F val = backInternalList.get(backInternalList.size()-indexPosition-1);
+            indexPosition=indexPosition+1 ;
+            return val;
+        }
+
+    }
 
 }

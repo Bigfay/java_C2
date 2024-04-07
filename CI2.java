@@ -21,21 +21,15 @@ public class CI2 {
             System.out.println(it.next());
         }
         /**
-         * TODO parcours classique
-         */
-
-        /**
          * ITERATION 2
          * Parcours de la collection dns l'ordre inverse d'insertion
          */
 
-        /**
-         * TODO parcours classique
-         */
         System.out.println("Itération 2");
-        Iterator<Integer> backIt = ic.backIterator();
-        while(backIt.hasNext()){
-            System.out.println(backIt.next());
+        IntegerCollection<Integer>.CustomIterator<Integer> backIt = ic.getCustomIterator();
+
+        while(backIt.hasPrevious()){
+            System.out.println(backIt.previous());
         }
 
         /**
@@ -43,11 +37,6 @@ public class CI2 {
          * Parcours de la collection dans l'ordre d'insertion via une boucle for-each
          */
         System.out.println("Itération 3");
-
-
-        /**
-         * TODO for-each
-         */
         for (Integer str: ic){
             System.out.println(str);
         }

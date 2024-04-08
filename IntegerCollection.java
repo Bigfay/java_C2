@@ -78,10 +78,22 @@ public class IntegerCollection<T> implements Iterable<T> {
             throw new MonExceptionAMoiException("IntegerCollections.captureetRelance()");
         }
     }
+
+    /**
+     * 
+     * @return un générateur qui produira les entiers dans l'ordre inverse
+     *         d'encodage
+     */
     public CustomIterator<T> getCustomIterator() {
         return new CustomIterator<T>(liste);
     }
 
+    /**
+     * @return un générateur qui produira les entiers dans l'ordre d'entrée
+     * @requires this ne doit pas être modifié pendant l'utilisation du générateur
+     *           d'où les
+     *           overrides et l'inhibition du remove()
+     */
     public Iterator<T> iterator() {
         return new CustomIterator<T>(liste);
     }
@@ -95,6 +107,13 @@ public class IntegerCollection<T> implements Iterable<T> {
             this.internalList = internalList;
         }
 
+        /**
+         * @return true si un élément existe après la position courante dans
+         *         l'itération.
+         *         Cela évite que l'appel de hasNext() ne provoque un exception
+         *         NoSuchElementException
+         * 
+         */
         @Override
         public boolean hasNext() {
             if (internalList.size() >= indexPosition + 1) {
@@ -103,17 +122,34 @@ public class IntegerCollection<T> implements Iterable<T> {
             return false;
         }
 
+        /**
+         * @return renvoit l'integer courant dans la liste
+         * @modifies this
+         * 
+         */
         @Override
         public E next() {
             E val = internalList.get(indexPosition);
             indexPosition++;
             return val;
         }
-        @Override public void remove() { 
-            throw new UnsupportedOperationException
-            ("IntegerCollection.CustomIterator.remove()");
+
+        /**
+         * @throws UnsupportedOperationException si on tente d'utiliser la méthode
+         *                                       remove
+         */
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("IntegerCollection.CustomIterator.remove()");
         }
 
+        /**
+         * @return true si un élément précédant la position courante dans
+         *         l'itération existe
+         *         Cela évite que l'appel de hasPrevious() ne provoque un exception
+         *         NoSuchElementException
+         * 
+         */
         public boolean hasPrevious() {
             if (0 <= internalList.size() - 1 - indexPosition) {
                 return true;
@@ -121,7 +157,11 @@ public class IntegerCollection<T> implements Iterable<T> {
             return false;
         }
 
-        // @Override
+        /**
+         * @return renvoit l'integer courant dans la liste
+         * @modifies this
+         * 
+         */
         public E previous() {
             E val = internalList.get(internalList.size() - indexPosition - 1);
             indexPosition = indexPosition + 1;

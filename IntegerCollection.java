@@ -109,6 +109,10 @@ public class IntegerCollection<T> implements Iterable<T> {
             indexPosition++;
             return val;
         }
+        @Override public void remove() { 
+            throw new UnsupportedOperationException
+            ("IntegerCollection.CustomIterator.remove()");
+        }
 
         public boolean hasPrevious() {
             if (0 <= internalList.size() - 1 - indexPosition) {
